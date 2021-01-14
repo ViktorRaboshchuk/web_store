@@ -37,7 +37,7 @@ def checkout(request):
     order = data['order']
     items = data['items']
 
-    context = {'items': items, 'order': order}
+    context = {'items': items, 'order': order,'cart_items':cart_items}
     return render(request, 'store/checkout.html', context=context)
 
 
@@ -48,7 +48,7 @@ def update_item(request):
 
     print('Action:', action)
     print('ProductId:',product_id)
-
+    print(request.user.body)
     customer = request.user.customer
     product = Product.objects.get(id=product_id)
     order, created = Order.objects.get_or_create(customer=customer, complete=False)

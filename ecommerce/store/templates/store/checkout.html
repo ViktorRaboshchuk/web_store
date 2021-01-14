@@ -29,9 +29,6 @@
 						<div class="form-field">
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Zip code..">
-						</div>
                     </div>
                     <hr>
                     <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
@@ -94,56 +91,61 @@
         })
 
         document.getElementById('make-payment').addEventListener('click', function(e){
-            submitFormFata()
+            submitFormData()
         })
 
-        function submitFormFata(){
-            console.log("Payment button clicked")
+         function submitFormData(){
+	    	console.log('Payment button clicked')
 
-             let userFormData = {
-                'name':null,
-                'email':null,
-                'total':total,
-            }
-            let shippingInfo = {
-                'address':null,
-                'city':null,
-                'state':null,
-                'zipcode':null,
-            }
+	    	var userFormData = {
+				'name':null,
+				'email':null,
+				'total':total,
+			}
 
-            if(shipping != 'False'){
-                shippingInfo.address = form.address.value
-                shippingInfo.city = form.city.value
-                shippingInfo.state = form.state.value
-                shippingInfo.zipcode = form.zipcode.value
-            }
+			var shippingInfo = {
+				'address':null,
+				'city':null,
+				'state':null,
+				'zipcode':null,
+			}
 
-            if(user == 'AnonymousUser'){
-                userFormData.name = form.name.value
-                userFormData.email = form.email.value
-            }
+			if (shipping != 'False'){
+	    		shippingInfo.address = form.address.value
+		    	shippingInfo.city = form.city.value
+		    	shippingInfo.state = form.state.value
+		    	shippingInfo.zipcode = form.zipcode.value
+	    	}
 
-            let url = '/process_order/'
-            fetch(url,{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json',
-                    'X-CSRFToken': csrftoken,
-                },
-                body:JSON.stringify({'form':userFormData, 'shipping': shippingInfo})
-            })
-            .then((response) => response.json())
-            .then((data) =>{
-                console.log('Success:', data);
-                alert('Transaction completed');
+	    	if (user == 'AnonymousUser'){
+	    		userFormData.name = form.name.value
+	    		userFormData.email = form.email.value
+	    	}
 
-                cart = {}
-                document.cookie = 'cart=' + JSON.stringify(cart) + ";domain=;path=/"
+	    	console.log('Shipping Info:', shippingInfo)
+	    	console.log('User Info:', userFormData)
 
-                window.location.href = "{% url 'store' %}"
-            })
-        }
+	    	var url = "/process_order/"
+	    	fetch(url, {
+	    		method:'POST',
+	    		headers:{
+	    			'Content-Type':'applicaiton/json',
+	    			'X-CSRFToken':"{{ csrf_token }}",
+	    		},
+	    		body:JSON.stringify({'form':userFormData, 'shipping':shippingInfo}),
 
-    </script>
+	    	})
+	    	.then((response) => response.json())
+	    	.then((data) => {
+				console.log('Success:', data);
+				alert('Transaction completed');
+
+				cart = {}
+				document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
+
+				window.location.href = "{% url 'store' %}"
+
+				})
+	    }
+	</script>
 {% endblock %}
