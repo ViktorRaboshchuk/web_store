@@ -138,8 +138,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-AWS_ACCESS_KEY_ID = 'AKIA2RWA7JA7UZN5LGDV'
-AWS_SECRET_ACCESS_KEY = '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'
+AWS_ACCESS_KEY_ID = '*'
+AWS_SECRET_ACCESS_KEY = '*'
 AWS_STORAGE_BUCKET_NAME = 'viktor-web-store'
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
